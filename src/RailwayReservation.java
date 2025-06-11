@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class RailwayReservation {
     private static final int MAX_SEATS = 50;
@@ -23,18 +20,51 @@ public class RailwayReservation {
         List<Ticket> confirmedList = confirmed.get(coachType);
         List<Ticket> waitingList = waiting.get(coachType);
 
-        if(confirmedList.size() < MAX_SEATS){
+        if (confirmedList.size() < MAX_SEATS) {
             Ticket t = new Ticket(ticketCounter++, name, coachType, false);
             confirmedList.add(t);
             System.out.println("Booking confirmed...");
-        }
-        else if(waitingList.size() < MAX_WAITING){
+        } else if (waitingList.size() < MAX_WAITING) {
             Ticket t = new Ticket(ticketCounter++, name, coachType, true);
             waitingList.add(t);
             System.out.println("Ticket added to waiting list...");
-        }
-        else{
+        } else {
             System.out.println("Failed to book tickets");
         }
+    }
+
+    public void cancelTickets(int ticketId) {
+        for (CoachType coach : CoachType.values()) {
+            List<Ticket> confirmedList = confirmed.get(coach);
+            Iterator<Ticket> it = confirmedList.iterator();
+            while (it.hasNext()) {
+                Ticket t = it.next();
+                if (t.id == ticketId) {
+                    it.remove();
+                    System.out.println("Cancelled Ticket " + t);
+
+                    List<Ticket> waitingList = waiting.get(coach);
+                    if (!waitingList.isEmpty()) {
+                        Ticket firstWaitingTicket = waitingList.remove(0);
+                        firstWaitingTicket.isWaiting = false;
+                        confirmedList.add(firstWaitingTicket);
+                        System.out.println("Promoted to confirmed" + firstWaitingTicket);
+                    }
+                    return;
+                }
+            }
+
+            List<Ticket> waitingList = waiting.get(coach);
+            it = waitingList.iterator();
+            while (it.hasNext()) {
+                Ticket t = it.next();
+                if (t.id == ticketId) {
+                    it.remove();
+                    System.out.println("Tickter removed from waiting list " + t);
+                    return;
+                }
+            }
+        }
+        System.out.println("Ticket not found");
     }
 }
