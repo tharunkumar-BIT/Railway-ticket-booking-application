@@ -12,6 +12,6 @@ public class Ticket {
     }
 
     public String toString() {
-        return "Ticket ID: " + id + ", Passesger Name: " + passengerName + ", Coach Type: " + coachType + (isWaiting ? " (Waiting) " : " (Confirmed) ");
+        return "Ticket ID: " + id + ", Passenger Name: " + passengerName + ", Coach Type: " + coachType + (isWaiting ? " (Waiting) " : " (Confirmed) ");
     }
 }
