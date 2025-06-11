@@ -67,4 +67,14 @@ public class RailwayReservation {
         }
         System.out.println("Ticket not found");
     }
+
+    public void checkStatus(){
+        for(CoachType coach : CoachType.values()){
+            System.out.println("\n Coach: " + coach);
+            System.out.println("Confirmed Tickets: ");
+            confirmed.get(coach).forEach(System.out::println);
+            System.out.println("Waiting List(s): ");
+            waiting.get(coach).forEach(System.out::println);
+        }
+    }
 }
